@@ -1,7 +1,17 @@
 const posts = require('../data/posts');
+const connection = require('../data/db');
 
 function index(req, res) {
-    res.json(posts);
+
+    const sql = 'SELECT * FROM posts'; //query database
+
+    //esecuzione della query
+    connection.query( sql,(err, results) => {
+        if(err) return res.status(500).json({
+            error: 'Errore nel Server'
+        })
+        res.json( results )
+    })
 }
 
 function show(req, res) {
@@ -72,12 +82,12 @@ function patch(req, res) {
 }
 
 function destroy(req, res) {
-    const id = parseInt(req.params.id); //estrae l'ID dal parametro della richiesta
+    // const id = parseInt(req.params.id); //estrae l'ID dal parametro della richiesta
 
-    const post = posts.find(post => post.id === id);//trova il post con l'ID
+    // const post = posts.find(post => post.id === id);//trova il post con l'ID
 
-    posts.splice(posts.indexOf(post), 1); //cerca il post nell'array e lo rimuove usando splice
-    res.sendStatus(204);//indica che la richiesta è stata completata con successo
+    // posts.splice(posts.indexOf(post), 1); //cerca il post nell'array e lo rimuove usando splice
+    // res.sendStatus(204);//indica che la richiesta è stata completata con successo
     
 }
 
