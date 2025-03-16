@@ -88,6 +88,18 @@ function destroy(req, res) {
 
     // posts.splice(posts.indexOf(post), 1); //cerca il post nell'array e lo rimuove usando splice
     // res.sendStatus(204);//indica che la richiesta è stata completata con successo
+
+    const {id} = req.params;
+
+    const sql = 'DELETE FROM posts WHERE id = ?';
+
+    connection.query( sql,[id], (err) => {
+        if(err) return res.status(500).json({
+            error: 'Database error query Destroy'
+        })
+
+        res.sendStatus(204)
+    })
     
 }
 
