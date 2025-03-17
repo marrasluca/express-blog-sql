@@ -15,21 +15,34 @@ function index(req, res) {
 }
 
 function show(req, res) {
-    const id = parseInt(req.params.id);
-    const post = posts.find(post => post.id === id);
+    // const id = parseInt(req.params.id);
+    // const post = posts.find(post => post.id === id);
 
-    if(!post){
-        res.status(404)
+    // if(!post){
+    //     res.status(404)
 
-        return res.json(
-            {
-                status: 404,
-                error: "Not found",
-                message: 'Post not found'
-            }
-        );
-    }
-    res.json(post);  
+    //     return res.json(
+    //         {
+    //             status: 404,
+    //             error: "Not found",
+    //             message: 'Post not found'
+    //         }
+    //     );
+    // }
+    // res.json(post);  
+
+    const {id} = req.params;
+    const sql = 'SELECT * FROM posts WHERE id = ?';
+
+    connection.query(sql, [id], (err, results) => {
+        if(err) return res.status(500).json({
+            error: 'Data Error Show'
+        })
+            if(results.length === 0) return res.status(404).json({
+                error: 'Not Found'
+            })
+            res.json(results[0]);
+    }) 
 }
 
 function store(req, res) {
